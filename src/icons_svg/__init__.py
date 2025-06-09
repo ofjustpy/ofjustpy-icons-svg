@@ -1,6 +1,9 @@
 import os
 import re
 
+import logging
+logger = logging.getLogger(__name__)
+
 assert "ICON_SVG_REPO_BASEDIR" in os.environ
 
 svg_repo_basedir = os.environ["ICON_SVG_REPO_BASEDIR"]
@@ -46,13 +49,16 @@ def get_svg(label, group, mdi_label):
     """
     
     try:
-        return get_fontawesome_svg(label, group)
+        fa_svg = get_fontawesome_svg(label, group)
+        return fa_svg
     except:
-
         if mdi_label:
             try:
-                return get_mdi_svg(mdi_label)
+                mdi_svg = get_mdi_svg(mdi_label)
+                print("returning  MDI SVG ")
+                return mdi_svg
             except:
+                logger.error(f"unable to find {mdi_label}")
                 pass
             
         raise ValueError(f"svg for label {label} {group} {mdi_label} -- Not found")
@@ -61,7 +67,6 @@ def get_svg(label, group, mdi_label):
     
 def get_fontawesome_svg( label, group="solid"):
     icon_filename = to_kebab_case(label[2:])
-    print(icon_filename)
     svg_path = os.path.join(svg_repo_basedir,
                             FONTAWESOME_SVG_REPO,
                             "svgs", group, f"{icon_filename}.svg")
@@ -73,6 +78,8 @@ def get_fontawesome_svg( label, group="solid"):
         return parse_fa_svg(svg_content
         )
     except FileNotFoundError:
+        logger.debug(f"cannot find svg from {label} with path = {svg_path}")
+        
         raise FileNotFoundError
     
     pass
