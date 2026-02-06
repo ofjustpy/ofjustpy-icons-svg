@@ -12,6 +12,7 @@ FONTAWESOME_SVG_REPO="Font-Awesome"
 MATERIAL_SVG_REPO="MaterialDesign-SVG"
 
 from lxml import etree
+from .get_lucide_svg import get_lucide_svg
 def parse_fa_svg(svg_content):
     parser = etree.HTMLParser()
     root = etree.fromstring(svg_content, parser)
@@ -55,7 +56,6 @@ def get_svg(label, group, mdi_label):
         if mdi_label:
             try:
                 mdi_svg = get_mdi_svg(mdi_label)
-                print("returning  MDI SVG ")
                 return mdi_svg
             except:
                 logger.error(f"unable to find {mdi_label}")
