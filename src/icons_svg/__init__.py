@@ -19,12 +19,13 @@ def parse_fa_svg(svg_content):
     body = root.getchildren()[0]
     svg = body.getchildren()[0]
     viewbox = svg.attrib['viewbox']
-    # for fontawesome [0] is comment
-    # 
+    # # for fontawesome [0] is comment
+    # # 
     path = svg.getchildren()[1]
     assert path.tag == "path"
     path_content = etree.tostring(path, encoding="unicode")
     return viewbox, path_content
+    #raise ValueError("Not Implemented")
 
 def parse_mdi_svg(svg_content):
     parser = etree.HTMLParser()
@@ -32,8 +33,8 @@ def parse_mdi_svg(svg_content):
     body = root.getchildren()[0]
     svg = body.getchildren()[0]
     viewbox = svg.attrib['viewbox']
-    # for fontawesome [0] is comment
-    # 
+    # # for fontawesome [0] is comment
+    # # 
     path = svg.getchildren()[0]
     assert path.tag == "path"
     path_content = etree.tostring(path, encoding="unicode")
@@ -49,6 +50,8 @@ def get_svg(label, group, mdi_label):
     
     """
     
+
+    fa_svg = get_fontawesome_svg(label, group)
     try:
         fa_svg = get_fontawesome_svg(label, group)
         return fa_svg
